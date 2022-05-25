@@ -1,7 +1,6 @@
 package com.example.cinema_rgr.entity;
 
 import lombok.*;
-
 import javax.persistence.*;
 
 @Entity
