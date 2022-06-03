@@ -1,0 +1,204 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title th:text="${title}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <style>
+        .mb-4, .my-4 {
+            margin-bottom: -0.2rem!important;
+        }
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            height: 100px;
+            width: 100px;
+            outline: black;
+            background-size: 100%, 100%;
+            border-radius: 50%;
+            border: 1px solid black;
+            background-image: none;
+        }
+
+        .carousel-control-next-icon:after
+        {
+            content: '>';
+            font-size: 55px;
+            color: #4b00d3;
+        }
+
+        .carousel-control-prev-icon:after {
+            content: '<';
+            font-size: 55px;
+            color: #4b00d3;
+        }
+
+        .btn-group {
+            text-align: center;
+        }
+
+        .btn-purple {
+            color: white;
+            background-color: rebeccapurple;
+        }
+
+        .back {
+            background-color: black;
+            color: black;
+        }
+
+        .d-block,
+        .card-img-top {
+            cursor: pointer;
+        }
+
+        .align-items-center {
+            align-items: center;
+        }
+
+        .card-text {
+            font-size: 1.3rem;
+        }
+        .col-md-1,
+        .col-md-5 {
+            max-width: 35.666667%;
+            top: 20px;
+            left: 20px;
+        }
+        .myh1 {
+            margin-top: 20px;
+            margin-bottom: 3rem;
+            font-family: inherit;
+            font-weight: 500;
+            line-height: 1.2;
+            color: inherit;
+        }
+
+        .myTable1 {
+            margin-top: 30px;
+        }
+
+        .todaySchedule {
+            margin-top: 10px;
+            background-color: #434343;
+            color: white;
+        }
+
+        .row {
+            color: black;
+        }
+
+        .border,
+        .card {
+            border-radius: 1.2rem;
+        }
+
+        body {
+            background-color: black;
+        }
+
+    </style>
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+<main role="main" >
+    <div class="album py-5 back" >
+        <div class="container"  style="background-color: black">
+            <div class="card mb-2">
+                <div class="row">
+                    <img class="col-md-5" th:src="|http://localhost:8080/${movieCard.get().getPath()}|" height="420" width="300" style="left: 15px" >
+                    <div class="col-md-7">
+                        <h1 class="myh1" th:text="${movieCard.get().getName()}"></h1>
+                        <table>
+                            <tr>
+                                <th class="font-weight-bold">Жанр:      </th><th class="font-weight-normal mb-1" th:text="${movieCard.get().getGenre()}"></th>
+                            </tr>
+                            <tr>
+                                <th class="font-weight-bold">Режисер:       </th><th class="font-weight-normal mb-1" th:text="${movieCard.get().getProducer()}"></th>
+                            </tr>
+                            <tr>
+                                <th class="font-weight-bold">В ролях:       </th><th class="font-weight-normal mb-1" th:text="${movieCard.get().getStarring()}"></th>
+                            </tr>
+                        </table>
+                        <table class="myTable1">
+                            <tr>
+                                <th class="font-weight-bold card-text" th:text="${movieCard.get().getDescription()}"></th>
+                            </tr>
+                        </table>
+                        <th:block th:switch="${user.role.toString()}" sec:authorize="isAuthenticated()">
+                            <div th:case="'ADMIN'" style="margin-top: 15px; margin-left: 14px;">
+                                <button class="btn btn-primary" th:onclick="|window.location.href='/admin/addScreening/movie'|">Добавить показ</button>
+                            </div>
+                        </th:block>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p></p>
+                    <h3 class="card-title">Расписание</h3>
+                    <div class="col-md-12 container" id="today">
+                        <h4 id="today_h4"></h4>
+                        <div class="container todaySchedule" style="border-radius: 0.75rem">
+                            <div class="row">
+                                <div class="col-2" th:each="screening : ${listScreeningToday}">
+                                    <div class="card" style="margin-top: 10px; margin-bottom: 10px">
+                                        <div class="card-body border border-primary">
+                                            <p class="card-text" th:text="${#temporals.format(screening.dateTime, 'HH:mm')}"></p>
+                                            <p class="font-weight-bold" style="color: #434343" th:text="${screening.hall.getName()}"></p>
+                                            <a th:href="'/movies/reservation/' + ${screening.id}" class="btn btn-primary">Купить</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p></p>
+
+                    <div class="col-md-12 container" id="tomorrow">
+                        <h4 id="tomorrow_h4"></h4>
+                        <div class="container todaySchedule" style="border-radius: 0.75rem">
+                            <div class="row">
+                                <div class="col-2" th:each="screening : ${listScreeningTomorrow}">
+                                    <div class="card" style="margin-top: 10px; margin-bottom: 10px">
+                                        <div class="card-body border border-primary">
+                                            <p class="card-text" th:text="${#temporals.format(screening.dateTime, 'HH:mm')}"></p>
+                                            <p class="font-weight-bold" style="color: #434343" th:text="${screening.hall.name}"></p>
+                                            <a th:href="'/movies/reservation/' + ${screening.id}" class="btn btn-primary">Купить</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p></p>
+
+                    <div class="col-md-12 container">
+                        <h4></h4>
+                        <div class="container todaySchedule" style="border-radius: 0.75rem">
+                            <div class="row">
+                                <div class="col-3" th:each="screening : ${listScreeningAfterTomorrow}">
+                                    <div class="card" style="margin-top: 10px; margin-bottom: 10px">
+                                        <div class="card-body border border-primary">
+                                            <p class="card-text" th:text="${#temporals.format(screening.dateTime, 'dd-MM-yyyy HH:mm')}"></p>
+                                            <p class="font-weight-bold" style="color: #434343" th:text="${screening.hall.name}"></p>
+                                            <a th:href="'/movies/reservation/' + ${screening.id}" class="btn btn-primary">Купить</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+<footer th:insert="blocks/footer :: footer" style="bottom: 0"></footer>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<script src="/js/movieCard.js"></script>
+</body>
+
+</html>
