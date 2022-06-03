@@ -1,0 +1,476 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Покупка билета</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <style>
+        .modal-content {
+            width: 1000px;
+        }
+        .modal-lg,
+        .modal-dialog {
+            margin-right: 415px;
+        }
+
+        @import url(//fonts.googleapis.com/css?family=Montserrat:300,400,500);
+        .bform {
+            font-family: "Montserrat", sans-serif;
+            color: #8d97ad;
+            font-weight: 300;
+            overflow: hidden;
+            position: relative;
+        }
+        .mb-4, .my-4 {
+            margin-bottom: -0.2rem!important;
+        }
+
+        .bform h1,
+        .bform h2,
+        .bform h3,
+        .bform h4,
+        .bform h5,
+        .bform h6 {
+            color: #3e4555;
+        }
+
+        .bform .subtitle {
+            color: #8d97ad;
+            line-height: 24px;
+        }
+
+        .bform a {
+            text-decoration: none;
+        }
+
+        .bform .btn-danger-gradiant {
+            background: #ff4d7e;
+            background: -webkit-gradient(linear, left top, right top, from(#ff4d7e), to(#ff6a5b));
+            background: -webkit-linear-gradient(left, #ff4d7e 0%, #ff6a5b 100%);
+            background: -o-linear-gradient(left, #ff4d7e 0%, #ff6a5b 100%);
+            background: linear-gradient(to right, #ff4d7e 0%, #ff6a5b 100%);
+        }
+
+        .bform .btn-danger-gradiant:hover {
+            background: #ff6a5b;
+            background: -webkit-gradient(linear, left top, right top, from(#ff6a5b), to(#ff4d7e));
+            background: -webkit-linear-gradient(left, #ff6a5b 0%, #ff4d7e 100%);
+            background: -o-linear-gradient(left, #ff6a5b 0%, #ff4d7e 100%);
+            background: linear-gradient(to right, #ff6a5b 0%, #ff4d7e 100%);
+        }
+
+        .bform .btn-md {
+            padding: 15px 45px;
+            font-size: 16px;
+        }
+
+        .bform .bg-facebook {
+            background-color: #3b5a9a;
+        }
+
+        .bform .bg-twitter {
+            background-color: #56adf2;
+        }
+
+        .bform .text-danger {
+            color: #ff4d7e !important;
+        }
+
+        .bform .right-image {
+            background-position: center bottom;
+            background-size: cover;
+            background-repeat: no-repeat;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            top: 0;
+        }
+
+        @media (max-width: 1023px) {
+            .bform .contact-form {
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .bform .contact-form {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+        }
+
+        @media (max-width: 1023px) {
+            .bform .right-image {
+                position: relative;
+                bottom: -95px;
+            }
+        }
+
+
+        .cinemaHall {
+            text-align: center;
+            display: inline-block;
+            vertical-align: top;
+        }
+        .seat {
+            height: 10px;
+            width: 10px;
+            margin-right: 2px;
+            background-color: #999999;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .passageBetween {
+            height: 1px;
+            width: 100%;
+            display: block;
+        }
+        .bay {
+            background-color: red;
+        }
+        .result {
+            font-size: 10px;
+            display: inline-block;
+            width: 90px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-right: 5px;
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            height: 100px;
+            width: 100px;
+            outline: black;
+            background-size: 100%, 100%;
+            border-radius: 50%;
+            border: 1px solid black;
+            background-image: none;
+        }
+
+        .carousel-control-next-icon:after
+        {
+            content: '>';
+            font-size: 55px;
+            color: #4b00d3;
+        }
+
+        .carousel-control-prev-icon:after {
+            content: '<';
+            font-size: 55px;
+            color: #4b00d3;
+        }
+
+        .mb-4, .my-4 {
+            margin-bottom: -0.2rem!important;
+        }
+        .btn-group {
+            text-align: center;
+        }
+
+        .btn-purple {
+            color: white;
+            background-color: rebeccapurple;
+        }
+
+        .back {
+            background-color: black;
+            color: black;
+        }
+
+        .d-block,
+        .card-img-top {
+            cursor: pointer;
+        }
+
+        .align-items-center {
+            align-items: center;
+        }
+
+        .card-text {
+            font-size: 1.3rem;
+        }
+
+        .td_row_text{
+            width: 30px;
+            height: 25px;
+        }
+
+        .td_row {
+            width: 25px;
+            height: 25px;
+            background: #6f00cb;
+            margin: 0px;
+        }
+
+        .td11 {
+            width: 25px;
+            height: 25px;
+            background: gray;
+            margin: 5px;
+        }
+        .td1 {
+            width: 25px;
+            height: 25px;
+            background-color: gray;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .td2 {
+            width: 25px;
+            height: 25px;
+            background: red;
+            margin: 5px;
+        }
+
+        .td3 {
+            width: 25px;
+            height: 25px;
+            background: lawngreen;
+            margin: 5px;
+        }
+        .table2,
+        .table1 {
+            margin-left: auto;
+            margin-right: auto;
+            border-collapse: separate;
+            border-spacing: 6px 6px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+           margin-bottom: 30px;
+        }
+
+        .row {
+            margin-top: 30px;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+<div th:insert="blocks/promo :: promo"></div>
+
+<div class="container">
+    <h1 th:text="${hall.name}" align="center" style="margin-top: 30px"></h1>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="float-right">
+                <div class="text-center">
+                    <table class="table1">
+                        <tr th:each="row : ${seats}">
+                            <td class="td_row_text">Ряд </td>
+                            <td class="td_row" th:text="${row.hallRowId.number}"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="float-left">
+                <div class="text-center">
+                    <table class="table1" id="table_div">
+                        <tr th:each="row : ${seats}">
+                            <div th:each="seat : ${#numbers.sequence(0, row.capacity)}">
+                                <td class="td1" th:text="${seat} + 1"></td>
+                            </div>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+
+            <div>
+                <h1 th:text="${movie.get().name}"></h1>
+                <h2 th:text="${#temporals.format(screening.dateTime, 'HH:mm')}"></h2>
+                <h2 th:text="${#temporals.format(screening.dateTime, 'dd.MM.yyyy')}"></h2>
+                <h2 th:text="${screening.hall.name}"></h2>
+            </div>
+
+            <table class="table2">
+                <tr>
+                    <td class="td2"></td>
+                    <td class="busy">Занято</td>
+                    <td class="td11"></td>
+                    <td class="free">Свободно</td>
+                    <td class="td3"></td>
+                    <td class="selected">Выбрано</td>
+                </tr>
+            </table>
+
+            <table id="tableResults">
+
+            </table>
+
+            <th:block sec:authorize="isAnonymous()">
+                <div class="text-center">
+                    <p>Необходима регистрация</p>
+                    <button href="#staticBackdropRegister" type="button" class="btn btn-success" data-toggle="modal" data-target="#staticBackdropRegister">Далее</button>
+                </div>
+            </th:block>
+            <th:block sec:authorize="isAuthenticated()">
+                <div class="text-center">
+                    <button href="#staticBackdrop" type="button" class="btn btn-success" data-toggle="modal" data-target="#staticBackdrop">Далее</button>
+                </div>
+            </th:block>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" id="modalWindow">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Покупка билета</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">Закрыть</button>
+            </div>
+            <div class="modal-body">
+                <form class="mt-3" method="post" action="/registration">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <p class="p-2">Ваш заказ</p>
+                                <table id="orderTable" class="table">
+                                    <tr>
+                                        <th>Количество</th>
+                                        <th>Итого</th>
+                                    </tr>
+                                    <tr>
+                                        <td id="tdNumberTickets"></td>
+                                        <td id="ticketPrice"></td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <h4 class="mb-3">Оплата</h4>
+                                <div class="my-3">
+                                    <div class="form-check">
+                                        <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked="" required="">
+                                        <label class="form-check-label" for="credit">Кредитная карта</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required="">
+                                        <label class="form-check-label" for="debit">Дебетовая карта</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" required="">
+                                        <label class="form-check-label" for="paypal">PayPal</label>
+                                    </div>
+                                </div>
+                                <div class="row gy-3">
+                                    <div class="col-md-6">
+                                        <label for="cc-name" class="form-label">Имя на карте</label>
+                                        <input type="text" class="form-control" id="cc-name" placeholder="" required="">
+                                        <small class="text-muted">Полное имя, как отображено на карточке</small>
+                                        <div class="invalid-feedback">
+                                            Имя на карте обязательно.
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="cc-number" class="form-label">Номер кредитной карты</label>
+                                        <input type="text" class="form-control" id="cc-number" placeholder="" required="">
+                                        <div class="invalid-feedback">
+                                            Номер кредитной карты обязателен.
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="cc-expiration" class="form-label" style="width: 100px;">Срок действия</label>
+                                        <input type="text" class="form-control" id="cc-expiration" placeholder="" required="">
+                                        <div class="invalid-feedback">
+                                            Дата истечения карты обязательна.
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3" style="margin-left: 50px;">
+                                        <label for="cc-cvv" class="form-label" style="margin-top: 24px;">CVV</label>
+                                        <input type="text" class="form-control" id="cc-cvv" placeholder="" required="">
+                                        <div class="invalid-feedback">
+                                            Защитный код обязателен.
+                                        </div>
+                                    </div>
+                                    <hr class="my-4">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                <button type="button" class="btn btn-primary" onclick="pay()">Оплатить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="modal fade" id="staticBackdropRegister" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 1000px;margin-left: -400px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabelRegister">Регистрация</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">Закрыть</button>
+            </div>
+            <div class="modal-body">
+                <form class="mt-3" method="post" action="/registration">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <input class="form-control" type="email" placeholder="email address" id="email" name="email">
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <input class="form-control" type="text" placeholder="phone" id="phone" name="phone">
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <input class="form-control" type="password" placeholder="password" id="password" name="password">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary"><span>Создать</span></button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<footer th:insert="blocks/footer :: footer"></footer>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    var screening = /*[[${screening}]]*/ 'default';
+
+    /*]]>*/
+</script>
+<script src="/js/reservation.js"></script>
+</body>
+</html>
