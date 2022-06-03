@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Личный кабинет</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <style>
+        @import url(//fonts.googleapis.com/css?family=Montserrat:300,400,500);
+
+        .font-weight-light {
+           color: white;
+       }
+
+        .bform {
+           font-family: "Montserrat", sans-serif;
+           color: #8d97ad;
+           font-weight: 300;
+           overflow: hidden;
+           position: relative;
+       }
+       .mb-4, .my-4 {
+           margin-bottom: -0.2rem!important;
+       }
+
+       .bform h1,
+       .bform h2,
+       .bform h3,
+       .bform h4,
+       .bform h5,
+       .bform h6 {
+           color: #3e4555;
+       }
+
+       .bform .subtitle {
+           color: #8d97ad;
+           line-height: 24px;
+       }
+
+       .bform a {
+           text-decoration: none;
+       }
+
+       .bform .btn-danger-gradiant {
+           background: #ff4d7e;
+           background: -webkit-gradient(linear, left top, right top, from(#ff4d7e), to(#ff6a5b));
+           background: -webkit-linear-gradient(left, #ff4d7e 0%, #ff6a5b 100%);
+           background: -o-linear-gradient(left, #ff4d7e 0%, #ff6a5b 100%);
+           background: linear-gradient(to right, #ff4d7e 0%, #ff6a5b 100%);
+       }
+
+       .bform .btn-danger-gradiant:hover {
+           background: #ff6a5b;
+           background: -webkit-gradient(linear, left top, right top, from(#ff6a5b), to(#ff4d7e));
+           background: -webkit-linear-gradient(left, #ff6a5b 0%, #ff4d7e 100%);
+           background: -o-linear-gradient(left, #ff6a5b 0%, #ff4d7e 100%);
+           background: linear-gradient(to right, #ff6a5b 0%, #ff4d7e 100%);
+       }
+
+       .bform .btn-md {
+           padding: 15px 45px;
+           font-size: 16px;
+       }
+
+       .bform .bg-facebook {
+           background-color: #3b5a9a;
+       }
+
+       .bform .bg-twitter {
+           background-color: #56adf2;
+       }
+
+       .bform .text-danger {
+           color: #ff4d7e !important;
+       }
+
+       .bform .right-image {
+           background-position: center bottom;
+           background-size: cover;
+           background-repeat: no-repeat;
+           position: absolute;
+           right: 0;
+           bottom: 0;
+           top: 0;
+       }
+
+       @media (max-width: 1023px) {
+           .bform .contact-form {
+               padding-left: 0;
+               padding-right: 0;
+           }
+       }
+
+       @media (max-width: 767px) {
+           .bform .contact-form {
+               padding-left: 15px;
+               padding-right: 15px;
+           }
+       }
+
+       @media (max-width: 1023px) {
+           .bform .right-image {
+               position: relative;
+               bottom: -95px;
+           }
+       }
+
+       .carousel-control-prev-icon,
+       .carousel-control-next-icon {
+           height: 100px;
+           width: 100px;
+           outline: black;
+           background-size: 100%, 100%;
+           border-radius: 50%;
+           border: 1px solid black;
+           background-image: none;
+       }
+
+       .carousel-control-next-icon:after
+       {
+           content: '>';
+           font-size: 55px;
+           color: #4b00d3;
+       }
+
+       .carousel-control-prev-icon:after {
+           content: '<';
+           font-size: 55px;
+           color: #4b00d3;
+       }
+
+       .btn-group {
+           text-align: center;
+       }
+
+       .btn-purple {
+           color: white;
+           background-color: rebeccapurple;
+       }
+
+       .back {
+           background-color: black;
+           color: black;
+       }
+
+       .d-block,
+       .card-img-top {
+           cursor: pointer;
+       }
+
+       .align-items-center {
+           align-items: center;
+       }
+
+       .card-text {
+           font-size: 1.3rem;
+       }
+       .pt-4, .py-4 {
+           padding-top: 6rem!important;
+       }
+
+    </style>
+</head>
+<body style="background-color: black">
+<header th:insert="blocks/header :: header"></header>
+
+<div class="container">
+    <div class="row ">
+        <div class="col-md-7 float-left" th:object="${user}">
+            <h1 class="font-weight-light">Личный кабинет</h1>
+            <p class="p font-weight-light">Email: <b th:text="${user.getEmail()}"></b></p>
+            <p class="p font-weight-light">Телефон: <b th:text="${user.getPhone()}"></b></p>
+            <p class="p font-weight-light">Имя: <b th:text="${user.getName}"></b></p>
+            <p class="p font-weight-light">Фамилия: <b th:text="${user.getSurname()}"></b></p>
+            <p class="p font-weight-light">День рождение: <b th:text="${user.getBirthday()}"></b></p>
+            <p class="p font-weight-light">Пол: <b th:text="${user.getGender()}"></b></p>
+            <p>
+                <button href="#staticBackdrop" type="button" class="btn btn-success" data-toggle="modal" data-target="#staticBackdrop">Редактировать</button>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="margin-top: 35px; margin-bottom: 35px;">
+    <th:block th:switch="${user.role.toString()}">
+        <div class="row" th:case="'ADMIN'">
+            <div class="col-3">
+                <a type="button" class="btn btn-warning" href="/admin/addMovie" style="width: 255px; height: 62px;">Добавить фильм</a>
+            </div>
+            <div class="col-3">
+                <button th:onclick="|window.location.href='/admin/addScreening/movie'|" type="button" class="btn btn-info">Составить расписание фильмов</button>
+            </div>
+            <div class="col-3">
+                <button th:onclick="|window.location.href='/admin/deleteMovie'|" type="button" class="btn btn-dark">Удалить фильм</button>
+            </div>
+        </div>
+    </th:block>
+</div>
+
+
+<form method="post" th:action="@{/users/update}" th:object="${user}">
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <input type="hidden" name="email" th:value="${user.getEmail()}">
+                    <input type="hidden" name="role" th:value="${user.getRole()}">
+                    <h5 class="modal-title" id="staticBackdropLabel">Редактор профиля</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">Закрыть</button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Имя</label>
+                        <input type="text" class="form-control" th:field="*{name}" placeholder="Иван">
+                    </div>
+                    <div class="mb-3">
+                        <label  class="form-label">Фамилия</label>
+                        <input type="text" class="form-control" th:field="*{surname}"  placeholder="Иванов">
+                    </div>
+                    <div class="mb-3">
+                        <label>Введите дату:</label>
+                        <input type="date" th:field="*{birthday}" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Пол</label>
+                        <div class="form-check">
+                            <input th:field="*{gender}" value="Мужской" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                Мужской
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input th:field="*{gender}" value="Женский" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                            <label class="form-check-label" for="flexRadioDefault2">
+                                Женский
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                    <button type="submit" class="btn btn-primary">Редактировать</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+<footer th:insert="blocks/footer :: footer"></footer>
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+</html>

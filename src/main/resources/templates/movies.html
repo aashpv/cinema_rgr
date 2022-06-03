@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${title}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <style>
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            height: 100px;
+            width: 100px;
+            outline: black;
+            background-size: 100%, 100%;
+            border-radius: 50%;
+            border: 1px solid black;
+            background-image: none;
+        }
+
+        .carousel-control-next-icon:after
+        {
+            content: '>';
+            font-size: 55px;
+            color: #4b00d3;
+        }
+
+        .carousel-control-prev-icon:after {
+            content: '<';
+            font-size: 55px;
+            color: #4b00d3;
+        }
+
+        .btn-group {
+            text-align: center;
+        }
+
+        .btn-purple {
+            color: white;
+            background-color: rebeccapurple;
+        }
+
+        .back {
+            background-color: black;
+            color: black;
+        }
+
+        .d-block,
+        .card-img-top {
+            cursor: pointer;
+        }
+
+        .align-items-center {
+            align-items: center;
+        }
+
+        .card-text {
+            font-size: 1.3rem;
+        }
+
+
+    </style>
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+<main role="main" >
+    <div class="album py-5 back" >
+        <div class="container"  style="background-color: black">
+            <div class="row">
+                <div class="col-md-4" th:each="movie : ${listMovies}">
+                    <p></p>
+                    <div class="card mb-4 shadow-sm">
+                        <img class="card-img-top" th:src="${movie.path}" width="300px" height="420px" alt="Card image cap" th:onclick="|window.location.href='/movies/${movie.getId()}'|">
+                        <div class="card-body">
+                            <p class="card-text" th:text="${movie.name}"></p>
+                            <div class="d-flex justify-content-between align-items-center" align="center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-purple" th:onclick="|window.location.href='/movies/${movie.getId()}'|">Купить</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:insert="blocks/footer :: footer"></footer>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+</body>
+</html>
