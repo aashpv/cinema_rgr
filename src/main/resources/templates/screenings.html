@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:text-align="http://www.w3.org/1999/xhtml">
+<head>
+    <title th:text="${title}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <style>
+        .mb-4, .my-4 {
+            margin-bottom: -0.2rem!important;
+        }
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            height: 100px;
+            width: 100px;
+            outline: black;
+            background-size: 100%, 100%;
+            border-radius: 50%;
+            border: 1px solid black;
+            background-image: none;
+        }
+
+        .carousel-control-next-icon:after
+        {
+            content: '>';
+            font-size: 55px;
+            color: #4b00d3;
+        }
+
+        .carousel-control-prev-icon:after {
+            content: '<';
+            font-size: 55px;
+            color: #4b00d3;
+        }
+
+        .btn-group {
+            text-align: center;
+        }
+
+        .btn-purple {
+            color: white;
+            background-color: rebeccapurple;
+        }
+
+        .back {
+            background-color: black;
+            color: black;
+        }
+
+        .d-block,
+        .card-img-top {
+            cursor: pointer;
+        }
+
+        .align-items-center {
+            align-items: center;
+        }
+
+        .card-text {
+            font-size: 1.3rem;
+        }
+
+
+    </style>
+</head>
+<body>
+    <header th:insert="blocks/header :: header"></header>
+    <div th:insert="blocks/promo :: promo"></div>
+    <main role="main" >
+        <div class="album py-5 back" >
+            <div class="container"  style="background-color: black">
+                <div class="row">
+                    <div class="col-md-6" th:each="movie : ${movieListHashMap}">
+                        <div th:if="${movieListHashMap.size() != 0}">
+                        <div class="row">
+                            <div class="col-6">
+                                <p></p>
+                                    <div class="card mb-4 shadow-sm">
+                                        <img class="card-img-top" th:src="${movie.key.path}" alt="Card image cap" th:onclick="|window.location.href='/movies/${movie.key.getId()}'|">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="card-body">
+                                        <p class="card-text" th:text="${movie.key.name}"></p>
+                                        <div class="row">
+                                            <div class="col-6" th:each="listTime : ${movie.getValue()}" th:if="${listTimeStat.index < 4}" style="margin-bottom: 15px;">
+                                                <div class="card" style="width: 80px;">
+                                                    <div style="text-align: center;">
+                                                        <p class="card-text" style="font-size: 30px; margin-bottom: -5px;" th:text="${#temporals.format(listTime.dateTime, 'HH:mm')}"></p>
+                                                        <p class="font-weight-bold" style="color: #434343; font-size: 20px" th:text="${listTime.hall.name}"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="margin-left: 14px;" th:onclick="|window.location.href='/movies/${movie.key.getId()}'|">
+                                                <button class="btn btn-primary">Ещё показы</button>
+                                            </div>
+                                            <th:block th:switch="${user.role.toString()}" sec:authorize="isAuthenticated()">
+                                                <div th:case="'ADMIN'" style="margin-top: 15px; margin-left: 14px;">
+                                                    <button class="btn btn-primary" th:onclick="|window.location.href='/admin/addScreening/movie'|">Добавить показ</button>
+                                                </div>
+                                            </th:block>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${movieListHashMap.size() == 0}" style="color: white;">
+                        <h1 class="mt-5" color="white">Ой...</h1>
+                        <p class="lead">Нет показов на этот день.</p>
+                        <p color="white">Вернитесь на <a href="/">главную</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+<footer th:insert="blocks/footer :: footer"></footer>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+</body>
+</html>
