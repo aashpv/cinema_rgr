@@ -1,0 +1,29 @@
+<div th:fragment="header">
+    <div class="container-fluid" style="background-color: rebeccapurple">
+        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+            <ul class="nav col-12 col-md-9 mb-2 justify-content-center mb-md-0" style="padding-left: 250px">
+                <li><a href="/today" class="nav-link px-2 link-dark text-white">Сегодня</a></li>
+                <li><a href="/tomorrow" class="nav-link px-2 link-dark text-white">Завтра</a></li>
+                <li><a href="/movies" class="nav-link px-2 link-dark text-white">Фильмы</a></li>
+                <li><a href="/myProfile" class="nav-link px-2 link-dark text-white">Личный кабинет</a></li>
+                <form method="get" action="/dayOfMonth" style="display: contents;">
+                    <li class="nav-link px-2 link-dark text-white">Показать фильмы на другой день -></li>
+                    <label for="start"></label><input type="date" id="start" class="form-control" name="dateTime"
+                                                      value="2022-02-15"
+                                                      min="2022-02-14" max="2022-02-28" style="width: 155.5px;">
+                    <script type="text/javascript">
+                        document.getElementById('start').valueAsDate = new Date();
+                    </script>
+                    <button type="submit" class="btn btn-primary" style="margin-left: 20px;" >Показать</button>
+                </form>
+            </ul>
+            <div class="col-md-3 text-end">
+                <th:block>
+                    <button sec:authorize="isAnonymous()" type="button" onclick=window.location.href='/login' class="btn btn-primary me-2">Войти</button>
+                    <button sec:authorize="isAnonymous()" type="button" onclick=window.location.href='/registration' class="btn btn-primary">Зарегистрироваться</button>
+                    <button sec:authorize="isAuthenticated()" type="button" onclick=window.location.href='/signOut' class="btn btn-primary">Выйти</button>
+                </th:block>
+            </div>
+        </header>
+    </div>
+</div>
